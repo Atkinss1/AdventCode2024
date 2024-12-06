@@ -1,6 +1,12 @@
 const fs = require('fs');
 
 const solution = () => {
+	const mockData = [
+		[7, 10, 8, 10, 11],
+		[29, 28, 27, 25, 26, 25, 22, 20],
+		[1, 2, 3, 4, 5],
+	];
+
 	const data = fs.readFileSync('../inputData/day2.txt', 'utf-8');
 	const parsedData = data
 		.trim()
@@ -20,24 +26,35 @@ const solution = () => {
 			return true;
 		}
 
+    
 		const isIncreasing = arr.every((_, i) => {
-			return i === 0 || arr[i] > arr[i - 1];
-		});
 
+      return i === 0 || arr[i] > arr[i - 1];
+		});
+    
 		const isDecreasing = arr.every((_, i) => {
-			return i === 0 || arr[i] < arr[i - 1];
+
+       if (arr[i] > arr[i - 1]) {
+					const modifiedArray = [...arr.slice(0, i), ...arr.slice(i + 1)];
+					return isValid(modifiedArray);
+				}
+      return i === 0 || arr[i] < arr[i - 1];
 		});
-
+    
 		const withinRange = arr.every((_, i) => {
-			if	(i === 0) {
+      if (i === 0) {
         return true;
-      }
+			}
+      
+      const diff = Math.abs(arr[i] - arr[i - 1]);
 
-      if (Math.abs(arr[i] - arr[i - 1]) >= 1 && Math.abs(arr[i] - arr[i - 1]) <= 3) {
-        return true;
-      }
+			if (
+				diff >= 1 &&
+				diff <= 3
+			) {
+				return true;
+			}
 
-      return false;
 		});
 
 		return (isIncreasing || isDecreasing) && withinRange;
