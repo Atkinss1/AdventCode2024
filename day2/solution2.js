@@ -33,11 +33,7 @@ const solution = () => {
 		});
     
 		const isDecreasing = arr.every((_, i) => {
-
-       if (arr[i] > arr[i - 1]) {
-					const modifiedArray = [...arr.slice(0, i), ...arr.slice(i + 1)];
-					return isValid(modifiedArray);
-				}
+      
       return i === 0 || arr[i] < arr[i - 1];
 		});
     
